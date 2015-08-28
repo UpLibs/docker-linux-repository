@@ -19,4 +19,5 @@ RUN apt-get update\
  && puppet apply --modulepath=${SETUP_DIR} -e "class {'upp_repository': }"\
  && rm -rf ${SETUP_DIR} awscli-bundle* puppetlabs-release-trusty.deb
 
+VOLUME ['/var/cache/repository']
 CMD ["/sbin/my_init"]
