@@ -3,6 +3,11 @@
     "Image": {
         "Name": "uppoints/docker-linux-repository:latest"
     },
+  "Ports": [
+    {
+      "ContainerPort": "1234"
+    }
+  ],
     "Volumes": [
         {
             "HostDirectory": "/var/cache/repository",
