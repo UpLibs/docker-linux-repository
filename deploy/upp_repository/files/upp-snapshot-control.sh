@@ -24,20 +24,21 @@ wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-quad.imx -O $BOOT_DIR/u-bo
 
 ## DOWNLOAD PACKAGES
 mkdir -p $PACKAGES_DIR/
+mkdir -p $PACKAGES_DIR/snapshots
+mkdir -p $PACKAGES_DIR/downloaded
+mkdir -p $PACKAGES_DIR/not_downloaded
+
 cd $PACKAGES_DIR/
 wget -nH -N -r --no-parent $URL_MIRROR > snapshot_"$DATE".txt 2>&1
 
 ## FILTER
-#cat snapshot_"$DATE".txt | grep salvo | awk -F "\“" '{print $2}' | awk -F "\”" '{print $1}' > downloaded_packages_"$DATE".txt 
-#cat snapshot_"$DATE".txt | grep ignorando.| awk -F "\“" '{print $2}' | awk -F "\”" '{print $1}' > aint_downloaded_packages_"$DATE".txt 
-
-cat snapshot_"$DATE".txt | grep saved | awk -F "\"" '{print $2}' | awk -F "\"" '{print $1}' > downloaded_packages_"$DATE".txt 
-cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk -F "\"" '{print $2}' | awk -F "\"" '{print $1}' > aint_downloaded_packages_"$DATE".txt 
+cat snapshot_"$DATE".txt | grep saved | awk '{print $6}' > ./downloaded/downloaded_packages_"$DATE".txt 
+cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk '{print $8}' > ./not_downloaded/aint_downloaded_packages_"$DATE".txt 
 
 
 ## ORGANIZING
 rm snapshot_"$DATE".txt
-cat downloaded_packages_"$DATE".txt aint_downloaded_packages_"$DATE".txt | sort > snapshot_"$DATE".txt
+cat ./downloaded/downloaded_packages_"$DATE".txt ./not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/snapshot_"$DATE".txt
 
 ## SYNC
 cd $REPOSITORY_DIR/ 

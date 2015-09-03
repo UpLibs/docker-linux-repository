@@ -14,14 +14,6 @@ file { $upp_repository::params::upp_repository_script:
 }
 
 
-#file { $upp_repository::params::upp_repository_supervisor:
-#        ensure  => present,
-#        mode    => '0755',
-#	source =>  "puppet:///modules/upp_repository/crond.conf",
-#        require => File[$upp_repository::params::upp_repository_script],
-#}
-
-
 
 cron { $upp_repository::params::upp_repository_cron:
 	command  => $upp_repository::params::upp_repository_script,
