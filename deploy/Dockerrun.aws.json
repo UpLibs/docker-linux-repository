@@ -1,7 +1,7 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-        "Name": "uppoints/docker-linux-repository:latest"
+        "Name": "uppoints/docker-linux-repository:test"
     },
   "Ports": [
     {

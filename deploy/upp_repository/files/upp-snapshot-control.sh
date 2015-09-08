@@ -42,4 +42,4 @@ cat ./downloaded/downloaded_packages_"$DATE".txt ./not_downloaded/aint_downloade
 
 ## SYNC
 cd $REPOSITORY_DIR/ 
-/sbin/aws s3 sync s3/ s3://$S3_BUCKET --acl public-read
+/sbin/aws $S3_DIR sync s3/ s3://$S3_BUCKET --acl public-read
