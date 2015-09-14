@@ -7,6 +7,7 @@ REPOSITORY_DIR="/var/cache/repository"
 S3_DIR="$REPOSITORY_DIR/s3"
 SYSTEM_DIR="$S3_DIR/system"
 BOOT_DIR="$S3_DIR/boot"
+UDOO_DIR="$BOOT_DIR/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 
 cd $REPOSITORY_DIR/
@@ -17,16 +18,14 @@ cd $S3_DIR/
 mkdir -p $SYSTEM_DIR/
 wget http://archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz -O $SYSTEM_DIR/ArchLinuxARM-armv7-"$DATE".tar.gz > /dev/null 2>&1
 
-## DOWNLOAD UBOOT
-mkdir -p $BOOT_DIR/
-wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-dual.imx -O $BOOT_DIR/u-boot-dual-"$DATE".imx > /dev/null 2>&1
-wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-quad.imx -O $BOOT_DIR/u-boot-quad-"$DATE".imx > /dev/null 2>&1
+## DOWNLOAD UBOOT UDOO
+mkdir -p $UDOO_DIR/{dual,quad}
+wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-dual.imx -O $BOOT_DIR/dual/u-boot-dual-"$DATE".imx > /dev/null 2>&1
+wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-quad.imx -O $BOOT_DIR/quad/u-boot-quad-"$DATE".imx > /dev/null 2>&1
 
 ## DOWNLOAD PACKAGES
 mkdir -p $PACKAGES_DIR/
-mkdir -p $PACKAGES_DIR/snapshots
-mkdir -p $PACKAGES_DIR/downloaded
-mkdir -p $PACKAGES_DIR/not_downloaded
+mkdir -p $PACKAGES_DIR/{snapshots,downloaded,not_downloaded}
 
 cd $PACKAGES_DIR/
 wget -nH -N -r --no-parent $URL_MIRROR > snapshot_"$DATE".txt 2>&1
@@ -42,4 +41,4 @@ cat ./downloaded/downloaded_packages_"$DATE".txt ./not_downloaded/aint_downloade
 
 ## SYNC
 cd $REPOSITORY_DIR/ 
-/sbin/aws $S3_DIR sync s3/ s3://$S3_BUCKET --acl public-read
+/sbin/aws sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
