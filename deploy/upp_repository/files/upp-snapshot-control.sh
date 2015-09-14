@@ -10,6 +10,8 @@ BOOT_DIR="$S3_DIR/boot"
 UDOO_DIR="$BOOT_DIR/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 
+source $REPOSITORY_DIR/env.txt
+
 cd $REPOSITORY_DIR/
 mkdir -p $S3_DIR/
 cd $S3_DIR/
@@ -41,4 +43,4 @@ cat ./downloaded/downloaded_packages_"$DATE".txt ./not_downloaded/aint_downloade
 
 ## SYNC
 cd $REPOSITORY_DIR/ 
-/sbin/aws sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
+/sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
