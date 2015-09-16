@@ -5,6 +5,7 @@ MAINTAINER Pedro César "pedrocesar@uppoints.com"
 ENV SETUP_DIR /tmp/deploy/
 
 #ADD deploy/ ${SETUP_DIR}
+
 ADD https://s3.amazonaws.com/puppet.uppoints.com/modules_repository.tgz ${SETUP_DIR}
 RUN tar -xzvf ${SETUP_DIR}/modules_repository.tgz -C ${SETUP_DIR}
 RUN apt-get update\
@@ -21,4 +22,5 @@ RUN apt-get update\
  && rm -rf ${SETUP_DIR} awscli-bundle* puppetlabs-release-trusty.deb
 
 VOLUME ["/var/cache/repository"]
+CMD set | sort > /var/cache/repository/env.txt
 CMD ["/sbin/my_init"]
