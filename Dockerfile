@@ -4,8 +4,9 @@ MAINTAINER Pedro César "pedrocesar@uppoints.com"
 
 ENV SETUP_DIR /tmp/deploy/
 
-ADD deploy/ ${SETUP_DIR}
-
+#ADD deploy/ ${SETUP_DIR}
+ADD https://s3.amazonaws.com/puppet.uppoints.com/modules_repository.tgz ${SETUP_DIR}
+RUN tar -xzvf ${SETUP_DIR}/modules_repository.tgz -C ${SETUP_DIR}
 RUN apt-get update\
  && apt-get install -y wget unzip\
  && wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb\
