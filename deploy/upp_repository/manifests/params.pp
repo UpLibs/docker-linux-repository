@@ -3,7 +3,7 @@ class upp_repository::params {
     /^(RedHat|CentOS|Debian|Ubuntu)$/: {
       $upp_repository_package_name 		= 'wget'
       $upp_repository_dir	 		= '/var/cache/repository'
-      $upp_repository_script	 		= '/var/cache/repository/upp-snapshot-control.sh'
+      $upp_repository_script	 		= '/usr/sbin/upp-snapshot-control.sh'
       $upp_repository_cron			= 'repository_archlinux'
       $upp_repository_minute_cron		= '0'
       $upp_repository_hour_cron	 		= '0-23/3'
