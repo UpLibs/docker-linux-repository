@@ -13,7 +13,7 @@ Two thins should be aware:
 2. To change the frequency of the script run on the system the variable '$upp_repository_hour_cron'	on params class (params.pp in manifests). 
 
 ## Volume
-There is an volume (100GB) that is mounted all the time in the instances that are deployed by Elastic Beanstalk and this same volume is bypassed and mounted on container too in both them in /var/cache/repository directory.
+There is a volume (100GB) that is mounted all the time in the instances that are deployed by Elastic Beanstalk and this same volume is bypassed and mounted on container too in both them in /var/cache/repository directory.
 
 ## Script
 The script makes all the tasks related to download packages and rename static files besides to log all the operations in snapshots files.
