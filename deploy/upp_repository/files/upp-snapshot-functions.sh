@@ -1,63 +1,39 @@
 upp_download()
 {
+	mkdir "$2"/temp
 	
-	[ ! -d download ] && mkdir download
+	aws s3api get-object --bucket "$3" --key "$4"/"$1" "$2"/temp/"$1"
 
-	aws s3api get-object --bucket upp-linux-repository.uppoints.com --key "$4"/"$1" "$1"
-
-	wget "$3" -O download/"$2" > /dev/null 2>&1
-
-	# md5sum "$1" > download/"$5"-md5
-
-	# cd download
-	
-	# sed -i s/"$1"/"$2"/g "$5"-md5
-
-	# STATUS=$(md5sum -c "$5"-md5 | awk '{print $2}')
-
-	# cd ..
-
-	# # if [ "$STATUS" == "OK" ]
-	# if [ "$STATUS" == "SUCESSO" ]
-	# then
-	# 	echo "$2" "É IGUAL A" "$1"
-	# 	# exit 0
-	# fi
-
-	# # if [ "$STATUS" != "OK" ]
-	# if [ "$STATUS" != "SUCESSO" ]
-	# then
-	# 	echo "$2" "É DIFERENTE DE" "$1"
-	# 	# exit 0
-	# fi
 }
 
 export -f upp_download
 
 upp_compareMD5() 
 {
-	md5sum "$1" > download/"$5"-md5
+	md5sum "$2"/"$3" > "$2"/temp/MD5SUM
 
-	cd download
+	cd "$2"/temp
 
-	sed -i s/"$1"/"$2"/g "$3"-md5
+	sed -i s/"$3"/temp'\/'"$1"/g MD5SUM
 
-	STATUS=$(md5sum -c "$3"-md5 | awk '{print $2}')
+	# rm "$1"
+
+	STATUS=$(md5sum -c MD5SUM | awk '{print $2}')
 
 	cd ..
+	rm -r temp
 
 	# if [ "$STATUS" == "OK" ]
 	if [ "$STATUS" == "SUCESSO" ]
 	then
-		echo "$2" "É IGUAL A" "$1"
-		# exit 0
+		echo "$3" "EQUALS" "$1"
+		rm "$3"
 	fi
 
 	# if [ "$STATUS" != "OK" ]
 	if [ "$STATUS" != "SUCESSO" ]
 	then
-		echo "$2" "É DIFERENTE DE" "$1"
-		# exit 0
+		echo "$3" "NOT EQUAL TO" "$1"
 	fi
 
 }
