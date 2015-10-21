@@ -23,15 +23,13 @@ upp_compareMD5()
 	cd ..
 	rm -r temp
 
-	# if [ "$STATUS" == "OK" ]
-	if [ "$STATUS" == "SUCESSO" ]
+	if [ "$STATUS" == "OK" ]
 	then
 		echo "$3" "EQUALS" "$1"
 		rm "$3"
 	fi
 
-	# if [ "$STATUS" != "OK" ]
-	if [ "$STATUS" != "SUCESSO" ]
+	if [ "$STATUS" != "OK" ]
 	then
 		echo "$3" "NOT EQUAL TO" "$1"
 	fi
