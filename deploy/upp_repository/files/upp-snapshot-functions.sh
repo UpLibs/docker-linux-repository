@@ -16,8 +16,6 @@ upp_compareMD5()
 
 	sed -i s/"$3"/temp'\/'"$1"/g MD5SUM
 
-	# rm "$1"
-
 	STATUS=$(md5sum -c MD5SUM | awk '{print $2}')
 
 	cd ..
