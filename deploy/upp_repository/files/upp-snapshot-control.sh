@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DATE=$(date +%Y%m%d%H%M)
-URL_MIRROR=${URL_MIRROR:-http://br.mirror.archlinuxarm.org/armv7h/}
+URL_MIRROR=${URL_MIRROR:-http://mirror.archlinuxarm.org/armv7h/}
 S3_BUCKET=${S3_BUCKET}
 REPOSITORY_DIR="/var/cache/repository"
 S3_DIR="$REPOSITORY_DIR/s3"
