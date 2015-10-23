@@ -19,7 +19,7 @@ upp_compareMD5()
 	STATUS=$(md5sum -c MD5SUM | awk '{print $2}')
 
 	cd ..
-	# rm -r temp
+	rm -r temp
 
 	if [ "$STATUS" == "OK" ]
 	then
