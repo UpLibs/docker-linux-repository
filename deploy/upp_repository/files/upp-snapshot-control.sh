@@ -10,10 +10,11 @@ BOOT_DIR="$S3_DIR/boot"
 UDOO_DIR="$BOOT_DIR/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 ARM_DIR="$PACKAGES_DIR/armv7h"
-LOG_DIR="$S3_DIR/log"
+SCRIPT_FILE=$(readlink -f $0)
+SCRIPT_DIR=`dirname $SCRIPT_FILE`
 
 source $REPOSITORY_DIR/env.txt
-source ./upp-snapshot-functions.sh
+source $SCRIPT_DIR/upp-snapshot-functions.sh
 
 cd $REPOSITORY_DIR/
 mkdir -p $S3_DIR/
