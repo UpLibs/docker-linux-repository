@@ -10,11 +10,42 @@ BOOT_DIR="$S3_DIR/boot"
 UDOO_DIR="$BOOT_DIR/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 ARM_DIR="$PACKAGES_DIR/armv7h"
-SCRIPT_FILE=$(readlink -f $0)
-SCRIPT_DIR=`dirname $SCRIPT_FILE`
 
 source $REPOSITORY_DIR/env.txt
-source $SCRIPT_DIR/upp-snapshot-functions.sh
+
+upp_download()
+{
+	mkdir "$2"/temp
+	
+	aws s3api get-object --bucket "$3" --key "$4"/"$1" "$2"/temp/"$1"
+
+}
+
+upp_compareMD5() 
+{
+	md5sum "$2"/"$3" > "$2"/temp/MD5SUM
+
+	cd "$2"/temp
+
+	sed -i s/"$3"/temp'\/'"$1"/g MD5SUM
+
+	STATUS=$(md5sum -c MD5SUM | awk '{print $2}')
+
+	cd ..
+	rm -r temp
+
+	if [ "$STATUS" == "OK" ]
+	then
+		echo "$3" "EQUALS" "$1"
+		rm "$3"
+	fi
+
+	if [ "$STATUS" != "OK" ]
+	then
+		echo "$3" "NOT EQUAL TO" "$1"
+	fi
+
+}
 
 cd $REPOSITORY_DIR/
 mkdir -p $S3_DIR/
