@@ -10,6 +10,7 @@ BOOT_DIR="$S3_DIR/boot"
 UDOO_DIR="$BOOT_DIR/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 ARM_DIR="$PACKAGES_DIR/armv7h"
+LOG_DIR="$S3_DIR/log"
 
 source $REPOSITORY_DIR/env.txt
 source ./upp-snapshot-functions.sh
@@ -24,6 +25,7 @@ wget http://archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz -O $SYSTEM_DIR/
 
 ## VERIFY ARCH FROM S3
 ARCHFILE=$(aws s3 ls s3://$S3_BUCKET/system/ --human-readable | awk 'END{print $5}')
+echo "ARCHFILE:" $ARCHFILE  > $LOG_DIR/archfile.txt
 if [ -n "$ARCHFILE" ]
 then
 	upp_download $ARCHFILE $SYSTEM_DIR $S3_BUCKET system
@@ -37,6 +39,7 @@ wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-quad.imx -O $UDOO_DIR/quad
 
 ## VERIFY UBOOT UDOO FROM S3
 UDOODUAL=$(aws s3 ls s3://$S3_BUCKET/boot/udoo/dual/ --human-readable | awk 'END{print $5}')
+echo "UDOODUAL:" $UDOODUAL  > $LOG_DIR/udoodual.txt
 if [ -n "$UDOODUAL" ]
 then
 	upp_download $UDOODUAL $UDOO_DIR/dual $S3_BUCKET boot/udoo/dual
@@ -44,6 +47,7 @@ then
 fi
 
 UDOOQUAD=$(aws s3 ls s3://$S3_BUCKET/boot/udoo/quad/ --human-readable | awk 'END{print $5}')
+echo "UDOOQUAD:" $UDOOQUAD  > $LOG_DIR/udooquad.txt
 if [ -n "$UDOOQUAD" ]
 then
 	upp_download $UDOOQUAD $UDOO_DIR/quad $S3_BUCKET boot/udoo/quad
