@@ -56,8 +56,6 @@ mkdir -p $SYSTEM_DIR/
 wget http://archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz -O $SYSTEM_DIR/ArchLinuxARM-armv7-"$DATE".tar.gz > /dev/null 2>&1
 
 ## VERIFY ARCH FROM S3
-ARCHFILE=$(aws s3 ls s3://$S3_BUCKET/system/ --human-readable | awk 'END{print $5}')
-echo "ARCHFILE:" $ARCHFILE  > $LOG_DIR/archfile.txt
 if [ -n "$ARCHFILE" ]
 then
 	upp_download $ARCHFILE $SYSTEM_DIR $S3_BUCKET system
@@ -70,16 +68,12 @@ wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-dual.imx -O $UDOO_DIR/dual
 wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-quad.imx -O $UDOO_DIR/quad/u-boot-quad-"$DATE".imx > /dev/null 2>&1
 
 ## VERIFY UBOOT UDOO FROM S3
-UDOODUAL=$(aws s3 ls s3://$S3_BUCKET/boot/udoo/dual/ --human-readable | awk 'END{print $5}')
-echo "UDOODUAL:" $UDOODUAL  > $LOG_DIR/udoodual.txt
 if [ -n "$UDOODUAL" ]
 then
 	upp_download $UDOODUAL $UDOO_DIR/dual $S3_BUCKET boot/udoo/dual
 	upp_compareMD5 $UDOODUAL $UDOO_DIR/dual u-boot-dual-"$DATE".imx
 fi
 
-UDOOQUAD=$(aws s3 ls s3://$S3_BUCKET/boot/udoo/quad/ --human-readable | awk 'END{print $5}')
-echo "UDOOQUAD:" $UDOOQUAD  > $LOG_DIR/udooquad.txt
 if [ -n "$UDOOQUAD" ]
 then
 	upp_download $UDOOQUAD $UDOO_DIR/quad $S3_BUCKET boot/udoo/quad
