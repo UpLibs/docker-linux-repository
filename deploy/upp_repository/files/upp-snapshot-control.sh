@@ -115,3 +115,13 @@ done
 ## SYNC
 cd $REPOSITORY_DIR/
 /sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
+
+## CLEAN
+cd $SYSTEM_DIR
+rm *.tar.gz
+
+cd $UDOO_DIR/dual
+rm *.imx
+
+cd $UDOO_DIR/quad
+rm *.imx
