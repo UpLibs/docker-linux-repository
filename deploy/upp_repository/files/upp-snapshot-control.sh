@@ -93,6 +93,8 @@ wget -nH -N -r --no-parent $URL_MIRROR > snapshot_"$DATE".txt 2>&1
 ## FILTER
 cat snapshot_"$DATE".txt | grep saved | awk '{print $6}' > ./downloaded/downloaded_packages_"$DATE".txt
 cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk '{print $8}' > ./not_downloaded/aint_downloaded_packages_"$DATE".txt
+sed -i s/[\“\”\‘\’]/\'/g ./downloaded/downloaded_packages_"$DATE".txt
+sed -i s/[\“\”\‘\’]/\'/g ./not_downloaded/aint_downloaded_packages_"$DATE".txt
 
 ## ORGANIZING
 rm snapshot_"$DATE".txt
