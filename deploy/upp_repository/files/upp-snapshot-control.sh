@@ -47,7 +47,8 @@ upp_compareMD5()
 
 }
 
-upp_verifySnapshotLogSize() {
+upp_verifySnapshotLogSize()
+{
 
 	LINES=$(wc -l $PACKAGES_DIR/snapshots/snapshot_"$DATE".txt | awk '{print $1}')
 	MINIMUM=200
