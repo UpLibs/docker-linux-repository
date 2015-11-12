@@ -47,6 +47,24 @@ upp_compareMD5()
 
 }
 
+upp_verifySnapshotLogSize() {
+
+	LINES=$(wc -l $PACKAGES_DIR/snapshots/snapshot_"$DATE".txt | awk '{print $1}')
+	MINIMUM=200
+	if [ "$LINES" -lt "$MINIMUM" ]
+	then
+		
+		rm $PACKAGES_DIR/snapshots/snapshot_"$DATE".txt
+		rm $PACKAGES_DIR/not_downloaded/aint_downloaded_packages_"$DATE".txt
+		rm $PACKAGES_DIR/downloaded/downloaded_packages_"$DATE".txt
+		rm $SYSTEM_DIR/*.tar.gz
+		rm $UDOO_DIR/dual/*.imx
+		rm $UDOO_DIR/quad/*.imx
+
+		exit 1
+	fi
+}
+
 cd $REPOSITORY_DIR/
 mkdir -p $S3_DIR/
 cd $S3_DIR/
@@ -99,6 +117,8 @@ sed -i s/[\“\”\‘\’]/\'/g ./not_downloaded/aint_downloaded_packages_"$DAT
 ## ORGANIZING
 rm snapshot_"$DATE".txt
 cat ./downloaded/downloaded_packages_"$DATE".txt ./not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/snapshot_"$DATE".txt
+
+upp_verifySnapshotLogSize
 
 ## RENAME STATIC FILES
 mkdir -p $ARM_DIR
