@@ -53,13 +53,18 @@ upp_verifySnapshotLogSize() {
 	MINIMUM=200
 	if [ "$LINES" -lt "$MINIMUM" ]
 	then
+		cd $PACKAGES_DIR
+		rm ./snapshots/snapshot_"$DATE".txt
+		rm ./not_downloaded/aint_downloaded_packages_"$DATE".txt
+		rm ./downloaded/downloaded_packages_"$DATE".txt
 		
-		rm $PACKAGES_DIR/snapshots/snapshot_"$DATE".txt
-		rm $PACKAGES_DIR/not_downloaded/aint_downloaded_packages_"$DATE".txt
-		rm $PACKAGES_DIR/downloaded/downloaded_packages_"$DATE".txt
-		rm $SYSTEM_DIR/*.tar.gz
-		rm $UDOO_DIR/dual/*.imx
-		rm $UDOO_DIR/quad/*.imx
+		cd $SYSTEM_DIR
+		rm *.tar.gz
+		
+		cd $UDOO_DIR/dual/
+		rm *.imx
+		cd $UDOO_DIR/quad/
+		rm *.imx
 
 		exit 1
 	fi
