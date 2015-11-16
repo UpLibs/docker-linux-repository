@@ -50,16 +50,16 @@ upp_compareMD5()
 upp_verifySnapshotLogSize()
 {
 
-	LINES=$(wc -l $PACKAGES_DIR/snapshots/snapshot_"$DATE".txt | awk '{print $1}')
+	LINES=$(wc -l $PACKAGES_DIR/snapshots/armv7h/snapshot_"$DATE".txt | awk '{print $1}')
 	MINIMUM=200
 	if [ "$LINES" -lt "$MINIMUM" ]
 	then
 		cd $PACKAGES_DIR
-		rm ./snapshots/snapshot_"$DATE".txt
-		rm ./not_downloaded/aint_downloaded_packages_"$DATE".txt
-		rm ./downloaded/downloaded_packages_"$DATE".txt
+		rm ./snapshots/armv7h/snapshot_"$DATE".txt
+		rm ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
+		rm ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
 		
-		cd $SYSTEM_DIR
+		cd $SYSTEM_DIR/armv7h
 		rm *.tar.gz
 		
 		cd $UDOO_DIR/dual/
@@ -77,14 +77,15 @@ cd $S3_DIR/
 
 ## DOWNLOAD ARCH
 mkdir -p $SYSTEM_DIR/
-wget http://archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz -O $SYSTEM_DIR/ArchLinuxARM-armv7-"$DATE".tar.gz > /dev/null 2>&1
+mkdir -p $SYSTEM_DIR/armv7h
+wget http://archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz -O $SYSTEM_DIR/armv7h/ArchLinuxARM-armv7-"$DATE".tar.gz > /dev/null 2>&1
 
 ## VERIFY ARCH FROM S3
 ARCHFILE=$(aws s3 ls s3://$S3_BUCKET/system/ --human-readable | awk 'END{print $5}')
 if [ -n "$ARCHFILE" ]
 then
-	upp_download $ARCHFILE $SYSTEM_DIR $S3_BUCKET system
-	upp_compareMD5 $ARCHFILE $SYSTEM_DIR ArchLinuxARM-armv7-"$DATE".tar.gz
+	upp_download $ARCHFILE $SYSTEM_DIR/armv7h $S3_BUCKET system
+	upp_compareMD5 $ARCHFILE $SYSTEM_DIR/armv7h ArchLinuxARM-armv7-"$DATE".tar.gz
 fi
 
 ## DOWNLOAD UBOOT UDOO
@@ -109,20 +110,22 @@ fi
 
 ## DOWNLOAD PACKAGES
 mkdir -p $PACKAGES_DIR/
-mkdir -p $PACKAGES_DIR/{snapshots,downloaded,not_downloaded}
+mkdir -p $PACKAGES_DIR/snapshots
+mkdir -p $PACKAGES_DIR/snapshots/armv7h
+mkdir -p $PACKAGES_DIR/snapshots/armv7h/{downloaded,not_downloaded}
 
 cd $PACKAGES_DIR/
 wget -nH -N -r --no-parent $URL_MIRROR > snapshot_"$DATE".txt 2>&1
 
 ## FILTER
-cat snapshot_"$DATE".txt | grep saved | awk '{print $6}' > ./downloaded/downloaded_packages_"$DATE".txt
-cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk '{print $8}' > ./not_downloaded/aint_downloaded_packages_"$DATE".txt
-sed -i s/[\“\”\‘\’]/\'/g ./downloaded/downloaded_packages_"$DATE".txt
-sed -i s/[\“\”\‘\’]/\'/g ./not_downloaded/aint_downloaded_packages_"$DATE".txt
+cat snapshot_"$DATE".txt | grep saved | awk '{print $6}' > ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
+cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk '{print $8}' > ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
+sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
+sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 
 ## ORGANIZING
 rm snapshot_"$DATE".txt
-cat ./downloaded/downloaded_packages_"$DATE".txt ./not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/snapshot_"$DATE".txt
+cat ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/armv7h/snapshot_"$DATE".txt
 
 upp_verifySnapshotLogSize
 
@@ -148,7 +151,7 @@ cd $REPOSITORY_DIR/
 /sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
 
 ## CLEAN
-cd $SYSTEM_DIR
+cd $SYSTEM_DIR/armv7h
 rm *.tar.gz
 
 cd $UDOO_DIR/dual
