@@ -17,7 +17,7 @@ upp_download()
 {
 	mkdir "$2"/temp
 	
-	aws s3api get-object --bucket "$3" --key "$4"/"$1" "$2"/temp/"$1"
+	aws s3api get-object --bucket "$3" --key "$4"/armv7h/"$1" "$2"/temp/"$1"
 
 }
 
@@ -81,7 +81,7 @@ mkdir -p $SYSTEM_DIR/armv7h
 wget http://archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz -O $SYSTEM_DIR/armv7h/ArchLinuxARM-armv7-"$DATE".tar.gz > /dev/null 2>&1
 
 ## VERIFY ARCH FROM S3
-ARCHFILE=$(aws s3 ls s3://$S3_BUCKET/system/ --human-readable | awk 'END{print $5}')
+ARCHFILE=$(aws s3 ls s3://$S3_BUCKET/system/armv7h/ --human-readable | awk 'END{print $5}')
 if [ -n "$ARCHFILE" ]
 then
 	upp_download $ARCHFILE $SYSTEM_DIR/armv7h $S3_BUCKET system
