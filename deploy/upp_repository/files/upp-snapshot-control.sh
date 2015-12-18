@@ -124,7 +124,7 @@ sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/downloaded/downloaded_packag
 sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 
 ## ORGANIZING
-rm snapshot_"$DATE".txt
+rm snapshot_*.txt
 cat ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/armv7h/snapshot_"$DATE".txt
 
 upp_verifySnapshotLogSize
