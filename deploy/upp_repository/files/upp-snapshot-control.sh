@@ -140,8 +140,8 @@ find . -iname "$file.abs.*" -exec echo "rename -f 's/$file\.abs\./$file\.ver$DAT
 find . -iname "$file.db" -exec echo "rename -f 's/$file\.db$/$file\.ver$DATE\.db/' {}" \; | bash
 find . -iname "$file.db.*" -exec echo "rename -f 's/$file\.db\./$file\.ver$DATE\.db\./' {}" \; | bash
 
-find . -iname "$file.*" -exec echo "rename -f 's/$file\.files$/$file\.ver$DATE\.files/' {}" \; | bash
-find . -iname "$file.*" -exec echo "rename -f 's/$file\.files\./$file\.ver$DATE\.files\./' {}" \; | bash
+find . -iname "$file.files" -exec echo "rename -f 's/$file\.files$/$file\.ver$DATE\.files/' {}" \; | bash
+find . -iname "$file.files.*" -exec echo "rename -f 's/$file\.files\./$file\.ver$DATE\.files\./' {}" \; | bash
 
 done
 
