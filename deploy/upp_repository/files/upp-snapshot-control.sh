@@ -62,6 +62,9 @@ upp_verifySnapshotLogSize()
 		cd $SYSTEM_DIR/armv7h
 		rm *.tar.gz
 		
+		cd $SYSTEM_DIR/armv7h/rpi-2
+		rm *.tar.gz
+
 		cd $UDOO_DIR/dual/
 		rm *.imx
 		cd $UDOO_DIR/quad/
@@ -78,15 +81,27 @@ cd $S3_DIR/
 ## DOWNLOAD ARCH
 mkdir -p $SYSTEM_DIR/
 mkdir -p $SYSTEM_DIR/armv7h
+## armv7
 wget http://archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz -O $SYSTEM_DIR/armv7h/ArchLinuxARM-armv7-"$DATE".tar.gz > /dev/null 2>&1
+## rpi-2
+mkdir -p $SYSTEM_DIR/armv7h/rpi-2
+wget http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz -O $SYSTEM_DIR/armv7h/rpi-2/ArchLinuxARM-armv7-rpi-2-"$DATE".tar.gz > /dev/null 2>&1
 
 ## VERIFY ARCH FROM S3
-ARCHFILE=$(aws s3 ls s3://$S3_BUCKET/system/armv7h/ --human-readable | awk 'END{print $5}')
-if [ -n "$ARCHFILE" ]
+ARCHARMV7=$(aws s3 ls s3://$S3_BUCKET/system/armv7h/ --human-readable | awk 'END{print $5}')
+if [ -n "$ARCHARMV7" ]
 then
-	upp_download $ARCHFILE $SYSTEM_DIR/armv7h $S3_BUCKET system/armv7h
-	upp_compareMD5 $ARCHFILE $SYSTEM_DIR/armv7h ArchLinuxARM-armv7-"$DATE".tar.gz
+	upp_download $ARCHARMV7 $SYSTEM_DIR/armv7h $S3_BUCKET system/armv7h
+	upp_compareMD5 $ARCHARMV7 $SYSTEM_DIR/armv7h ArchLinuxARM-armv7-"$DATE".tar.gz
 fi
+
+ARCHRPI2=$(aws s3 ls s3://$S3_BUCKET/system/armv7h/rpi-2/ --human-readable | awk 'END{print $5}')
+if [ -n "$ARCHRPI2" ]
+then
+	upp_download $ARCHRPI2 $SYSTEM_DIR/armv7h/rpi-2 $S3_BUCKET system/armv7h/rpi-2
+	upp_compareMD5 $ARCHRPI2 $SYSTEM_DIR/armv7h/rpi-2 ArchLinuxARM-armv7-rpi-2-"$DATE".tar.gz
+fi
+
 
 ## DOWNLOAD UBOOT UDOO
 mkdir -p $UDOO_DIR/{dual,quad}
@@ -152,6 +167,9 @@ cd $REPOSITORY_DIR/
 
 ## CLEAN
 cd $SYSTEM_DIR/armv7h
+rm *.tar.gz
+
+cd $SYSTEM_DIR/armv7h/rpi-2
 rm *.tar.gz
 
 cd $UDOO_DIR/dual
