@@ -7,7 +7,7 @@ REPOSITORY_DIR="/var/cache/repository"
 S3_DIR="$REPOSITORY_DIR/s3"
 SYSTEM_DIR="$S3_DIR/system"
 BOOT_DIR="$S3_DIR/boot"
-UDOO_DIR="$BOOT_DIR/udoo"
+UDOO_DIR="$BOOT_DIR/u-boot/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 ARM_DIR="$PACKAGES_DIR/armv7h"
 
@@ -109,17 +109,17 @@ wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-dual.imx -O $UDOO_DIR/dual
 wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-quad.imx -O $UDOO_DIR/quad/u-boot-quad-"$DATE".imx > /dev/null 2>&1
 
 ## VERIFY UBOOT UDOO FROM S3
-UDOODUAL=$(aws s3 ls s3://$S3_BUCKET/boot/udoo/dual/ --human-readable | awk 'END{print $5}')
+UDOODUAL=$(aws s3 ls s3://$S3_BUCKET/boot/u-boot/udoo/dual/ --human-readable | awk 'END{print $5}')
 if [ -n "$UDOODUAL" ]
 then
-	upp_download $UDOODUAL $UDOO_DIR/dual $S3_BUCKET boot/udoo/dual
+	upp_download $UDOODUAL $UDOO_DIR/dual $S3_BUCKET boot/u-boot/udoo/dual
 	upp_compareMD5 $UDOODUAL $UDOO_DIR/dual u-boot-dual-"$DATE".imx
 fi
 
-UDOOQUAD=$(aws s3 ls s3://$S3_BUCKET/boot/udoo/quad/ --human-readable | awk 'END{print $5}')
+UDOOQUAD=$(aws s3 ls s3://$S3_BUCKET/boot/u-boot/udoo/quad/ --human-readable | awk 'END{print $5}')
 if [ -n "$UDOOQUAD" ]
 then
-	upp_download $UDOOQUAD $UDOO_DIR/quad $S3_BUCKET boot/udoo/quad
+	upp_download $UDOOQUAD $UDOO_DIR/quad $S3_BUCKET boot/u-boot/udoo/quad
 	upp_compareMD5 $UDOOQUAD $UDOO_DIR/quad u-boot-quad-"$DATE".imx
 fi
 
