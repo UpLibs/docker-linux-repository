@@ -7,7 +7,7 @@ REPOSITORY_DIR="/var/cache/repository"
 S3_DIR="$REPOSITORY_DIR/s3"
 SYSTEM_DIR="$S3_DIR/system"
 BOOT_DIR="$S3_DIR/boot"
-UDOO_DIR="$BOOT_DIR/udoo"
+UDOO_DIR="$BOOT_DIR/u-boot/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 ARM_DIR="$PACKAGES_DIR/armv7h"
 
