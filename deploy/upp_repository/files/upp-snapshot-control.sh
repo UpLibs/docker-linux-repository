@@ -60,7 +60,6 @@ find . -iname "$file.files.*" -exec echo "rename -f 's/$file\.files\./$file\.ver
 
 done
 
-
 ## SYNC
 cd $REPOSITORY_DIR/
 /sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
