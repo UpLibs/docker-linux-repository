@@ -5,7 +5,7 @@ DATE=$(date +%Y%m%d%H%M)
 source ./upp-functions.sh
 upp_export_variables
 
-#source $REPOSITORY_DIR/env.txt
+source $REPOSITORY_DIR/env.txt
 
 cd $REPOSITORY_DIR/
 mkdir -p $S3_DIR/
