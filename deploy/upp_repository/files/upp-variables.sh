@@ -2,7 +2,6 @@
 
 export URL_MIRROR=${URL_MIRROR}
 export S3_BUCKET=${S3_BUCKET}
-export REPOSITORY_DIR="/var/cache/repository"
 export S3_DIR="$REPOSITORY_DIR/s3"
 export SYSTEM_DIR="$S3_DIR/system"
 export BOOT_DIR="$S3_DIR/boot"
