@@ -1,11 +1,12 @@
 #!/bin/bash
 
 DATE=$(date +%Y%m%d%H%M)
+REPOSITORY_DIR="/var/cache/repository"
+
+source $REPOSITORY_DIR/env.txt
 
 source ./upp-functions.sh
 upp_export_variables
-
-source $REPOSITORY_DIR/env.txt
 
 cd $REPOSITORY_DIR/
 mkdir -p $S3_DIR/
