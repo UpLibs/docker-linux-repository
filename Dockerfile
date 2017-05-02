@@ -13,6 +13,7 @@ RUN apt-get update\
  && wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb\
  && dpkg -i puppetlabs-release-trusty.deb\
  && apt-get update\
+ && apt-get -y install puppet-common=3.8.7-1puppetlabs1\
  && apt-get -y install puppet\
  && wget https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -O awscli-bundle.zip\
  && unzip awscli-bundle.zip\
