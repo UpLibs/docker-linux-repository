@@ -4,8 +4,8 @@ DATE=$(date +%Y%m%d%H%M)
 ## DOWNLOAD UBOOT UDOO
 
 cd $S3_DIR/
-mkdir -p $UDOO_DIR/{dual,quad}
 
+mkdir -p $UDOO_DIR/{dual,quad}
 
 wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-dual.imx -O $UDOO_DIR/dual/u-boot-udoo-dual-"$DATE".imx > /dev/null 2>&1
 wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-quad.imx -O $UDOO_DIR/quad/u-boot-udoo-quad-"$DATE".imx > /dev/null 2>&1

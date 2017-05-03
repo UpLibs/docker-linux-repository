@@ -3,6 +3,7 @@ DATE=$(date +%Y%m%d%H%M)
 
 ## DOWNLOAD ARCH
 cd $S3_DIR/
+
 mkdir -p $SYSTEM_DIR/
 mkdir -p $SYSTEM_DIR/armv7h
 

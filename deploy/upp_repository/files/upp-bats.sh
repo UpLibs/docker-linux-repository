@@ -4,11 +4,12 @@ DATE=$(date +%Y%m%d%H%M)
 
 ## DOWNLOAD SHELLINABOX
 cd $S3_DIR/
+
 mkdir -p $SOFTWARES/
 mkdir -p $BATS_DIR/
 
 
-wget http://github.com/shellinabox/shellinabox.git -O $SHELLINABOX_DIR/Shellinabox-"$DATE".tar.gz > /dev/null 2>&1
+wget https://github.com/sstephenson/bats.git -O $BATS_DIR/Bats-"$DATE".tar.gz > /dev/null 2>&1
 
 
 ## VERIFY SHELLINABOX FROM S3

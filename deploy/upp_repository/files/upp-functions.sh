@@ -25,7 +25,7 @@ upp_compareMD5()
 
 	STATUS=$(md5sum -c MD5SUM | awk '{print $2}')
 
-   cd ..
+    cd ..
 	rm -r temp
 
 
@@ -63,10 +63,11 @@ upp_verifySnapshotLogSize()
 
 		cd $UDOO_DIR/dual/
 		rm *.imx
+		
 		cd $UDOO_DIR/quad/
 		rm *.imx
 
 		exit 1
 	fi
 }
-export -f upp_compareMD5
+export -f upp_verifySnapshotLogSize
