@@ -1,6 +1,9 @@
 #!/bin/bash
 DATE=$(date +%Y%m%d%H%M)
 
+cd $REPOSITORY_DIR/
+mkdir -p $S3_DIR/
+
 ## DOWNLOAD ARCH
 cd $S3_DIR/
 
