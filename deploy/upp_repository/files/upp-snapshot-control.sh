@@ -5,7 +5,9 @@ DATE=$(date +%Y%m%d%H%M)
 source ./upp-functions.sh
 upp_export_variables
 
-source $REPOSITORY_DIR/env.txt
+echo "Starting Snapshot Control."
+
+#source $REPOSITORY_DIR/env.txt
 
 cd $REPOSITORY_DIR/
 mkdir -p $S3_DIR/
@@ -22,6 +24,8 @@ mkdir -p $S3_DIR/
 
 ## DOWNLOAD UBOOT UDOO
 ./upp-uboot-udoo.sh
+
+
 
 ## DOWNLOAD PACKAGES
 mkdir -p $PACKAGES_DIR/
@@ -60,6 +64,7 @@ find . -iname "$file.files.*" -exec echo "rename -f 's/$file\.files\./$file\.ver
 
 done
 
+
 ## SYNC
 cd $REPOSITORY_DIR/
 /sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
@@ -77,8 +82,8 @@ rm *.imx
 cd $UDOO_DIR/quad
 rm *.imx
 
-cd $SHELLINABOX_DIR/shellinabox
+cd $SHELLINABOX_DIR
 rm *.tar.gz
 
-cd $BATS_DIR/bats
+cd $BATS_DIR
 rm *.itar.gz
