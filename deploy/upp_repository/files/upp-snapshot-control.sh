@@ -7,11 +7,7 @@ upp_export_variables
 
 echo "Starting Snapshot Control."
 
-#source $REPOSITORY_DIR/env.txt
-
-cd $REPOSITORY_DIR/
-mkdir -p $S3_DIR/
-
+source $REPOSITORY_DIR/env.txt
 
 ## DOWNLOAD ARCH
 ./upp-arch.sh
@@ -28,6 +24,8 @@ mkdir -p $S3_DIR/
 
 
 ## DOWNLOAD PACKAGES
+cd $S3_DIR/
+
 mkdir -p $PACKAGES_DIR/
 mkdir -p $PACKAGES_DIR/snapshots
 mkdir -p $PACKAGES_DIR/snapshots/armv7h
