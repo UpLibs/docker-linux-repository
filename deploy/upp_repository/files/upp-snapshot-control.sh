@@ -177,3 +177,4 @@ rm *.imx
 
 cd $UDOO_DIR/quad
 rm *.imx
+
