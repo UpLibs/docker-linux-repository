@@ -71,3 +71,17 @@ upp_verifySnapshotLogSize()
 	fi
 }
 export -f upp_verifySnapshotLogSize
+
+upp_sync()
+{
+  cd $1/
+  /sbin/aws s3 sync $2/ s3://$3 --acl public-read
+}
+export -f upp_sync
+
+upp_clean()
+{
+  cd $1
+  rm $2
+}
+export -f upp_clean
