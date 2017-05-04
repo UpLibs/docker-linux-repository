@@ -28,8 +28,8 @@ echo "Download Packages..."
 upp_verifySnapshotLogSize
 
 ## RENAME STATIC FILES
-echo "Snapshot Control..."
-./upp-snapshot-control.sh
+echo "Renaming files..."
+./upp-rename-static-files.sh
 
 
 ## SYNC
