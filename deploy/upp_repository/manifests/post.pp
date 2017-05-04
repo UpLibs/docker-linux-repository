@@ -52,7 +52,7 @@ file { $upp_repository::params::upp_repository_variables:
 file { $upp_repository::params::upp_repository_download_packages:
         ensure  => present,
         mode    => '0755',
-        source =>  "puppet:///modules/upp_repository/upp-download-packages.sh'",
+        source =>  "puppet:///modules/upp_repository/upp-download-packages.sh",
 }
 
 file { $upp_repository::params::upp_repository_rename_static_files:
