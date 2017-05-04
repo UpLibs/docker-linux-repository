@@ -10,6 +10,11 @@ BOOT_DIR="$S3_DIR/boot"
 UDOO_DIR="$BOOT_DIR/u-boot/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 ARM_DIR="$PACKAGES_DIR/armv7h"
+SOFTWARES="$S3_DIR/softwares"
+SHELLINABOX_DIR="$SOFTWARES/shellinabox"
+BATS_DIR="$SOFTWARES/bats"
+
+echo "Starting Snapshot Control"
 
 source $REPOSITORY_DIR/env.txt
 
@@ -70,6 +75,12 @@ upp_verifySnapshotLogSize()
 		cd $UDOO_DIR/quad/
 		rm *.imx
 
+		cd $SHELLINABOX_DIR/
+		rm *.tar.gz
+
+		cd $BATS_DIR
+		rm *.tar.gz
+
 		exit 1
 	fi
 }
@@ -79,6 +90,8 @@ mkdir -p $S3_DIR/
 cd $S3_DIR/
 
 ## DOWNLOAD ARCH
+echo "Downloading ArchLinux..."
+
 mkdir -p $SYSTEM_DIR/
 mkdir -p $SYSTEM_DIR/armv7h
 ## armv7
@@ -104,6 +117,8 @@ fi
 
 
 ## DOWNLOAD UBOOT UDOO
+echo "Downloading u-boot..."
+
 mkdir -p $UDOO_DIR/{dual,quad}
 wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-dual.imx -O $UDOO_DIR/dual/u-boot-udoo-dual-"$DATE".imx > /dev/null 2>&1
 wget http://archlinuxarm.org/os/imx6/boot/udoo/u-boot-quad.imx -O $UDOO_DIR/quad/u-boot-udoo-quad-"$DATE".imx > /dev/null 2>&1
@@ -123,7 +138,46 @@ then
 	upp_compareMD5 $UDOOQUAD $UDOO_DIR/quad u-boot-udoo-quad-"$DATE".imx
 fi
 
+## DOWNLOAD SHELLINABOX
+echo "Downloading Shell In A Box..."
+
+mkdir -p $SOFTWARES/
+mkdir -p $SHELLINABOX_DIR/
+
+
+wget http://github.com/shellinabox/shellinabox.git -O $SHELLINABOX_DIR/Shellinabox-"$DATE".tar.gz > /dev/null 2>&1
+
+ 
+## VERIFY SHELLINABOX FROM S3
+SHELLINABOX=$(aws s3 ls s3://$S3_BUCKET/softwares/shellinabox/ --human-readable | awk 'END{print $5}')
+
+if [ -n "$SHELLINABOX" ]
+then   
+   upp_download $SHELLINABOX $SHELLINABOX_DIR $S3_BUCKET softwares/shellinabox
+   upp_compareMD5 $SHELLINABOX $SHELLINABOX_DIR Shellinabox-"$DATE".tar.gz
+fi
+
+## DOWNLOAD BATS
+echo "Downloading BATS..."
+
+mkdir -p $BATS_DIR/
+
+
+wget https://github.com/sstephenson/bats.git -O $BATS_DIR/Bats-"$DATE".tar.gz > /dev/null 2>&1
+
+
+## VERIFY BATS FROM S3
+BATS=$(aws s3 ls s3://$S3_BUCKET/softwares/bats/ --human-readable | awk 'END{print $5}')
+if [ -n "$BATS" ]
+then   
+   upp_download $BATS $BATS_DIR $S3_BUCKET softwares/bats
+   upp_compareMD5 $BATS $BATS_DIR Bats-"$DATE".tar.gz
+fi
+
 ## DOWNLOAD PACKAGES
+
+echo "Downloading packages..."
+
 mkdir -p $PACKAGES_DIR/
 mkdir -p $PACKAGES_DIR/snapshots
 mkdir -p $PACKAGES_DIR/snapshots/armv7h
@@ -133,18 +187,23 @@ cd $PACKAGES_DIR/
 wget -nH -N -r --no-parent $URL_MIRROR > snapshot_"$DATE".txt 2>&1
 
 ## FILTER
+echo "Filtering..."
+
 cat snapshot_"$DATE".txt | grep saved | awk '{print $6}' > ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
 cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk '{print $8}' > ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
 sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 
 ## ORGANIZING
+echo "Organizing..."
+
 rm snapshot_*.txt
 cat ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/armv7h/snapshot_"$DATE".txt
 
 upp_verifySnapshotLogSize
 
 ## RENAME STATIC FILES
+echo "Renaming files..."
 mkdir -p $ARM_DIR
 cd $ARM_DIR
 for file in `find . -type d | awk -F "/" '{print $2}'`
@@ -162,10 +221,14 @@ done
 
 
 ## SYNC
+echo "Syncing..."
+
 cd $REPOSITORY_DIR/
 /sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
 
 ## CLEAN
+echo "Cleaning..."
+
 cd $SYSTEM_DIR/armv7h
 rm *.tar.gz
 
@@ -178,3 +241,10 @@ rm *.imx
 cd $UDOO_DIR/quad
 rm *.imx
 
+cd $SHELLINABOX_DIR/
+rm *.tar.gz
+
+cd $BATS_DIR
+rm *.tar.gz
+
+echo "Finishing Snapshot Control"
