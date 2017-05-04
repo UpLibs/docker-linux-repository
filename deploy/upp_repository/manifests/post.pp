@@ -13,7 +13,53 @@ file { $upp_repository::params::upp_repository_script:
         require => File[$upp_repository::params::upp_repository_dir],
 }
 
+file { $upp_repository::params::upp_repository_arch:
+        ensure  => present,
+        mode    => '0755',
+        source =>  "puppet:///modules/upp_repository/upp-arch.sh",
+}
 
+file { $upp_repository::params::upp_repository_bats:
+        ensure  => present,
+        mode    => '0755',
+        source =>  "puppet:///modules/upp_repository/upp-bats.sh",
+}
+
+file { $upp_repository::params::upp_repository_functions:
+        ensure  => present,
+        mode    => '0755',
+        source =>  "puppet:///modules/upp_repository/upp-functions.sh",
+}
+
+file { $upp_repository::params::upp_repository_shellinabox:
+        ensure  => present,
+        mode    => '0755',
+        source =>  "puppet:///modules/upp_repository/upp-shellinabox.sh",
+}
+
+file { $upp_repository::params::upp_repository_uboot_udoo:
+        ensure  => present,
+        mode    => '0755',
+        source =>  "puppet:///modules/upp_repository/upp-uboot-udoo.sh",
+}
+
+file { $upp_repository::params::upp_repository_variables:
+        ensure  => present,
+        mode    => '0755',
+        source =>  "puppet:///modules/upp_repository/upp-variables.sh",
+}
+
+file { $upp_repository::params::upp_repository_download_packages:
+        ensure  => present,
+        mode    => '0755',
+        source =>  "puppet:///modules/upp_repository/upp-download-packages.sh",
+}
+
+file { $upp_repository::params::upp_repository_rename_static_files:
+        ensure  => present,
+        mode    => '0755',
+        source =>  "puppet:///modules/upp_repository/upp-rename-static-files.sh",
+}
 
 cron { $upp_repository::params::upp_repository_cron:
 	command  => $upp_repository::params::upp_repository_script,
