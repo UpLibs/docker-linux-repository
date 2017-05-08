@@ -52,39 +52,41 @@ upp_verifySnapshotLogSize()
 
 	LINES=$(wc -l $PACKAGES_DIR/snapshots/armv7h/snapshot_"$DATE".txt | awk '{print $1}')
 	MINIMUM=200
-	if [ "$LINES" -lt "$MINIMUM" ]
-	then
-		cd $PACKAGES_DIR
+	echo "snapshot lines: " $LINES
+	
+	# if [ "$LINES" -lt "$MINIMUM" ]
+	# then
+	# 	cd $PACKAGES_DIR
 
-		echo "Current dir (logSize cd packages dir): "
-		pwd
+	# 	echo "Current dir (logSize cd packages dir): "
+	# 	pwd
 
-		rm ./snapshots/armv7h/snapshot_"$DATE".txt
-		rm ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
-		rm ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
+	# 	rm ./snapshots/armv7h/snapshot_"$DATE".txt
+	# 	rm ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
+	# 	rm ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
 		
-		cd $SYSTEM_DIR/armv7h
-		echo "Current dir (logSize rm armv7h): "
-		pwd
-		rm *.tar.gz
+	# 	cd $SYSTEM_DIR/armv7h
+	# 	echo "Current dir (logSize rm armv7h): "
+	# 	pwd
+	# 	rm *.tar.gz
 		
-		cd $SYSTEM_DIR/armv7h/rpi-2
-		echo "Current dir (logSize rm rpi-2): "
-		pwd
-		rm *.tar.gz
+	# 	cd $SYSTEM_DIR/armv7h/rpi-2
+	# 	echo "Current dir (logSize rm rpi-2): "
+	# 	pwd
+	# 	rm *.tar.gz
 
-		cd $UDOO_DIR/dual/
-		echo "Current dir (logSize rm dual): "
-		pwd
-		rm *.imx
+	# 	cd $UDOO_DIR/dual/
+	# 	echo "Current dir (logSize rm dual): "
+	# 	pwd
+	# 	rm *.imx
 
-		cd $UDOO_DIR/quad/
-		echo "Current dir (logSize rm quad): "
-		pwd
-		rm *.imx
+	# 	cd $UDOO_DIR/quad/
+	# 	echo "Current dir (logSize rm quad): "
+	# 	pwd
+	# 	rm *.imx
 
-		exit 1
-	fi
+	# 	exit 1
+	# fi
 }
 
 cd $REPOSITORY_DIR/
