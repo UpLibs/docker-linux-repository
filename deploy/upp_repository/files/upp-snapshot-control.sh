@@ -52,41 +52,20 @@ upp_verifySnapshotLogSize()
 
 	LINES=$(wc -l $PACKAGES_DIR/snapshots/armv7h/snapshot_"$DATE".txt | awk '{print $1}')
 	MINIMUM=200
-	echo "snapshot lines: " $LINES
-	
-	# if [ "$LINES" -lt "$MINIMUM" ]
-	# then
-	# 	cd $PACKAGES_DIR
+	echo "SNAPSHOT SIZE: " $LINES " LINES"
 
-	# 	echo "Current dir (logSize cd packages dir): "
-	# 	pwd
+	if [ "$LINES" -lt "$MINIMUM" ]
+	then
+		cd $PACKAGES_DIR
 
-	# 	rm ./snapshots/armv7h/snapshot_"$DATE".txt
-	# 	rm ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
-	# 	rm ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
+		rm ./snapshots/armv7h/snapshot_"$DATE".txt
+		rm ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
+		rm ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt	
 		
-	# 	cd $SYSTEM_DIR/armv7h
-	# 	echo "Current dir (logSize rm armv7h): "
-	# 	pwd
-	# 	rm *.tar.gz
+		rm -rf ./armv7h/*.*
 		
-	# 	cd $SYSTEM_DIR/armv7h/rpi-2
-	# 	echo "Current dir (logSize rm rpi-2): "
-	# 	pwd
-	# 	rm *.tar.gz
-
-	# 	cd $UDOO_DIR/dual/
-	# 	echo "Current dir (logSize rm dual): "
-	# 	pwd
-	# 	rm *.imx
-
-	# 	cd $UDOO_DIR/quad/
-	# 	echo "Current dir (logSize rm quad): "
-	# 	pwd
-	# 	rm *.imx
-
-	# 	exit 1
-	# fi
+		exit 1
+	fi
 }
 
 cd $REPOSITORY_DIR/
@@ -144,14 +123,8 @@ mkdir -p $PACKAGES_DIR/snapshots
 mkdir -p $PACKAGES_DIR/snapshots/armv7h
 mkdir -p $PACKAGES_DIR/snapshots/armv7h/{downloaded,not_downloaded}
 
-echo "Current dir (1): "
-pwd
-
 cd $PACKAGES_DIR/
 wget -nH -N -r --no-parent $URL_MIRROR > snapshot_"$DATE".txt 2>&1
-
-echo "Current dir (2): "
-pwd
 
 ## FILTER
 cat snapshot_"$DATE".txt | grep saved | awk '{print $6}' > ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
@@ -159,27 +132,15 @@ cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk '{print $8}' > ./snapsho
 sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
 sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 
-echo "Current dir (3): "
-pwd
-
 ## ORGANIZING
 rm snapshot_*.txt
 cat ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/armv7h/snapshot_"$DATE".txt
 
-echo "Current dir (4): "
-pwd
-
 upp_verifySnapshotLogSize
-
-echo "Current dir (5): "
-pwd
 
 ## RENAME STATIC FILES
 mkdir -p $ARM_DIR
 cd $ARM_DIR
-
-echo "Current dir (6): "
-pwd
 
 for file in `find . -type d | awk -F "/" '{print $2}'`
 do
@@ -194,35 +155,21 @@ find . -iname "$file.files.*" -exec echo "rename -f 's/$file\.files\./$file\.ver
 
 done
 
-echo "Current dir (7): "
-pwd
-
 ## SYNC
 cd $REPOSITORY_DIR/
-
-echo "Current dir (8): "
-pwd
 
 /sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
 
 ## CLEAN
 cd $SYSTEM_DIR/armv7h
-echo "Current dir (9): "
-pwd
 rm *.tar.gz
 
 cd $SYSTEM_DIR/armv7h/rpi-2
-echo "Current dir (10): "
-pwd
 rm *.tar.gz
 
 cd $UDOO_DIR/dual
-echo "Current dir (11): "
-pwd
 rm *.imx
 
 cd $UDOO_DIR/quad
-echo "Current dir (12): "
-pwd
 rm *.imx
 
