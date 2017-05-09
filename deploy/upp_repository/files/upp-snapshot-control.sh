@@ -62,8 +62,6 @@ upp_verifySnapshotLogSize()
 		rm ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 		rm ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt	
 		
-		rm -rf ./armv7h/*.*
-		
 		exit 1
 	fi
 }
@@ -136,7 +134,7 @@ sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/not_downloaded/aint_download
 rm snapshot_*.txt
 cat ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/armv7h/snapshot_"$DATE".txt
 
-upp_verifySnapshotLogSize
+# upp_verifySnapshotLogSize
 
 ## RENAME STATIC FILES
 mkdir -p $ARM_DIR
