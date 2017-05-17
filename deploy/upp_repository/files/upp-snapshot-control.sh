@@ -156,7 +156,7 @@ done
 ## SYNC
 cd $REPOSITORY_DIR/
 
-/sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
+/sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read > sync_"$DATE".log
 
 ## CLEAN
 cd $SYSTEM_DIR/armv7h
