@@ -13,6 +13,11 @@ ARM_DIR="$PACKAGES_DIR/armv7h"
 
 # source $REPOSITORY_DIR/env.txt
 
+echo $URL_MIRROR >> $REPOSITORY_DIR/vars_"$DATE".log
+echo URL_MIRROR >> $REPOSITORY_DIR/vars_"$DATE".log
+echo $S3_BUCKET >> $REPOSITORY_DIR/vars_"$DATE".log
+echo S3_BUCKET >> $REPOSITORY_DIR/vars_"$DATE".log
+
 upp_download()
 {
 	mkdir "$2"/temp
