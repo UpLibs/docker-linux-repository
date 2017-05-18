@@ -1,8 +1,8 @@
 #!/bin/bash
 
 DATE=$(date +%Y%m%d%H%M)
-URL_MIRROR=${URL_MIRROR}
-S3_BUCKET=${S3_BUCKET}
+# URL_MIRROR=${URL_MIRROR}
+# S3_BUCKET=${S3_BUCKET}
 REPOSITORY_DIR="/var/cache/repository"
 S3_DIR="$REPOSITORY_DIR/s3"
 SYSTEM_DIR="$S3_DIR/system"
@@ -13,10 +13,9 @@ ARM_DIR="$PACKAGES_DIR/armv7h"
 
 # source $REPOSITORY_DIR/env.txt
 
+echo $DATE >> $REPOSITORY_DIR/vars_"$DATE".log
 echo $URL_MIRROR >> $REPOSITORY_DIR/vars_"$DATE".log
-echo URL_MIRROR >> $REPOSITORY_DIR/vars_"$DATE".log
 echo $S3_BUCKET >> $REPOSITORY_DIR/vars_"$DATE".log
-echo S3_BUCKET >> $REPOSITORY_DIR/vars_"$DATE".log
 
 upp_download()
 {
@@ -129,10 +128,6 @@ mkdir -p $PACKAGES_DIR/snapshots/armv7h/{downloaded,not_downloaded}
 cd $PACKAGES_DIR/
 wget -nH -N -r --no-parent $URL_MIRROR > snapshot_"$DATE".txt 2>&1
 
-echo "ll" >> $REPOSITORY_DIR/dir_"$DATE".log
-ll >> $REPOSITORY_DIR/dir_"$DATE".log
-cat snapshot_"$DATE".txt >> $REPOSITORY_DIR/dir_"$DATE".log
-
 ## FILTER
 cat snapshot_"$DATE".txt | grep saved | awk '{print $6}' > ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
 cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk '{print $8}' > ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
@@ -140,7 +135,7 @@ sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/downloaded/downloaded_packag
 sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 
 ## ORGANIZING
-# rm snapshot_*.txt
+rm snapshot_*.txt
 cat ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt | sort > ./snapshots/armv7h/snapshot_"$DATE".txt
 
 # upp_verifySnapshotLogSize
