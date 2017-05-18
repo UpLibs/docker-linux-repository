@@ -11,7 +11,7 @@ UDOO_DIR="$BOOT_DIR/u-boot/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 ARM_DIR="$PACKAGES_DIR/armv7h"
 
-source $REPOSITORY_DIR/env.txt
+# source $REPOSITORY_DIR/env.txt
 
 upp_download()
 {
