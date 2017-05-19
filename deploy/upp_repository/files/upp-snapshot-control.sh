@@ -13,11 +13,15 @@ ARM_DIR="$PACKAGES_DIR/armv7h"
 
 # source $REPOSITORY_DIR/env.txt
 
-echo $DATE >> $REPOSITORY_DIR/vars_"$DATE".log
-echo $URL_MIRROR >> $REPOSITORY_DIR/vars_"$DATE".log
-echo $S3_BUCKET >> $REPOSITORY_DIR/vars_"$DATE".log
-echo $AWS_ACCESS_KEY_ID >> $REPOSITORY_DIR/vars_"$DATE".log
-echo $AWS_SECRET_ACCESS_KEY >> $REPOSITORY_DIR/vars_"$DATE".log
+printenv >> $REPOSITORY_DIR/vars_"$DATE".log
+echo "" >> $REPOSITORY_DIR/vars_"$DATE".log
+echo "--" >> $REPOSITORY_DIR/vars_"$DATE".log
+echo "" >> $REPOSITORY_DIR/vars_"$DATE".log
+env >> $REPOSITORY_DIR/vars_"$DATE".log
+echo "" >> $REPOSITORY_DIR/vars_"$DATE".log
+echo "--" >> $REPOSITORY_DIR/vars_"$DATE".log
+echo "" >> $REPOSITORY_DIR/vars_"$DATE".log
+set >> $REPOSITORY_DIR/vars_"$DATE".log
 
 upp_download()
 {
