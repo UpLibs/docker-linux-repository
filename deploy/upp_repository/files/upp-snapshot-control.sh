@@ -12,11 +12,6 @@ ARM_DIR="$PACKAGES_DIR/armv7h"
 # ARQUIVO GERADO MANUALMENTE: env > /var/cache/repository/env.txt
 source $REPOSITORY_DIR/env.txt
 
-echo $URL_MIRROR >> $REPOSITORY_DIR/vars_"$DATE".log
-echo $S3_BUCKET >> $REPOSITORY_DIR/vars_"$DATE".log
-echo $AWS_ACCESS_KEY_ID >> $REPOSITORY_DIR/vars_"$DATE".log
-echo $AWS_SECRET_ACCESS_KEY >> $REPOSITORY_DIR/vars_"$DATE".log
-
 upp_download()
 {
 	mkdir "$2"/temp
