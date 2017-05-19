@@ -1,8 +1,6 @@
 #!/bin/bash
 
 DATE=$(date +%Y%m%d%H%M)
-# URL_MIRROR=${URL_MIRROR}
-# S3_BUCKET=${S3_BUCKET}
 REPOSITORY_DIR="/var/cache/repository"
 S3_DIR="$REPOSITORY_DIR/s3"
 SYSTEM_DIR="$S3_DIR/system"
@@ -11,17 +9,13 @@ UDOO_DIR="$BOOT_DIR/u-boot/udoo"
 PACKAGES_DIR="$S3_DIR/packages"
 ARM_DIR="$PACKAGES_DIR/armv7h"
 
-# source $REPOSITORY_DIR/env.txt
+# ARQUIVO GERADO MANUALMENTE: env > /var/cache/repository/env.txt
+source $REPOSITORY_DIR/env.txt
 
-printenv >> $REPOSITORY_DIR/vars_"$DATE".log
-echo "" >> $REPOSITORY_DIR/vars_"$DATE".log
-echo "--" >> $REPOSITORY_DIR/vars_"$DATE".log
-echo "" >> $REPOSITORY_DIR/vars_"$DATE".log
-env >> $REPOSITORY_DIR/vars_"$DATE".log
-echo "" >> $REPOSITORY_DIR/vars_"$DATE".log
-echo "--" >> $REPOSITORY_DIR/vars_"$DATE".log
-echo "" >> $REPOSITORY_DIR/vars_"$DATE".log
-set >> $REPOSITORY_DIR/vars_"$DATE".log
+echo $URL_MIRROR >> $REPOSITORY_DIR/vars_"$DATE".log
+echo $S3_BUCKET >> $REPOSITORY_DIR/vars_"$DATE".log
+echo $AWS_ACCESS_KEY_ID >> $REPOSITORY_DIR/vars_"$DATE".log
+echo $AWS_SECRET_ACCESS_KEY >> $REPOSITORY_DIR/vars_"$DATE".log
 
 upp_download()
 {
@@ -166,7 +160,7 @@ done
 ## SYNC
 cd $REPOSITORY_DIR/
 
-/sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read > sync_"$DATE".log
+/sbin/aws s3 sync $S3_DIR/ s3://$S3_BUCKET --acl public-read
 
 ## CLEAN
 cd $SYSTEM_DIR/armv7h
