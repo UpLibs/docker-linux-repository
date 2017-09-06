@@ -51,7 +51,6 @@ upp_verifySnapshotLogSize()
 
 	LINES=$(wc -l $PACKAGES_DIR/snapshots/armv7h/snapshot_"$DATE".txt | awk '{print $1}')
 	MINIMUM=200
-	echo "SNAPSHOT SIZE: " $LINES " LINES"
 
 	if [ "$LINES" -lt "$MINIMUM" ]
 	then
@@ -125,7 +124,7 @@ wget -nH -N -r --no-parent $URL_MIRROR > snapshot_"$DATE".txt 2>&1
 
 ## FILTER
 cat snapshot_"$DATE".txt | grep saved | awk '{print $6}' > ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
-cat snapshot_"$DATE".txt | grep 'not retrieving.' | awk '{print $8}' > ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
+cat snapshot_"$DATE".txt | grep 'not modified.' | awk '{print $2}' > ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/downloaded/downloaded_packages_"$DATE".txt
 sed -i s/[\“\”\‘\’]/\'/g ./snapshots/armv7h/not_downloaded/aint_downloaded_packages_"$DATE".txt
 
